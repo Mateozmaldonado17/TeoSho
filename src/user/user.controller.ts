@@ -10,7 +10,7 @@ import {
 import { UserService } from './user.service';
 import { PrismaPromise, User } from '@prisma/client';
 import { IsEmail, IsNotEmpty, MinLength } from 'class-validator';
-import { JwtAuthGuard } from 'src/jwt-auth.guard';
+import { JwtAuthGuard } from '../jwt-auth.guard';
 import { ITokenPayload } from 'inteface';
 
 export class CreateUserDto {

@@ -21,5 +21,6 @@ model Product {
   id Int @id @default(autoincrement()) 
   name String @unique
   description String
-  price Float
+  image String @default("")
+  price Decimal @db.Decimal(10,2)
 }

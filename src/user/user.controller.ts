@@ -12,7 +12,6 @@ import { PrismaPromise, User } from '@prisma/client';
 import { IsEmail, IsNotEmpty, MinLength } from 'class-validator';
 import { JwtAuthGuard } from 'src/jwt-auth.guard';
 import { ITokenPayload } from 'inteface';
-import { create } from 'domain';
 
 export class CreateUserDto {
   @IsEmail()

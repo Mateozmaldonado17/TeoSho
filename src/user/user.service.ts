@@ -1,7 +1,7 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PrismaService } from 'nestjs-prisma';
 import { CreateUserDto } from './user.controller';
-import type { Prisma, PrismaPromise, User } from '@prisma/client';
+import type { PrismaPromise, User } from '@prisma/client';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
 import { ITokenPayload } from '../../inteface';

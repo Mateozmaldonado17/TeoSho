@@ -1,10 +1,10 @@
 import { Module } from '@nestjs/common';
 import { UserController } from './user.controller';
-import { AppService } from 'src/app.service';
+import { AppService } from '../app.service';
 import { UserService } from './user.service';
 import { PrismaService } from 'nestjs-prisma';
 import { JwtModule } from '@nestjs/jwt';
-import { JwtStrategy } from 'src/jwt.strategy';
+import { JwtStrategy } from '../jwt.strategy';
 
 @Module({
   imports: [
@@ -15,5 +15,6 @@ import { JwtStrategy } from 'src/jwt.strategy';
   ],
   controllers: [UserController],
   providers: [AppService, UserService, PrismaService, JwtStrategy],
+  exports: [UserService],
 })
 export class UserModule {}

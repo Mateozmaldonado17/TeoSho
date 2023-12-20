@@ -41,8 +41,8 @@ export class UserController {
   }
 
   @Post('sign-in')
-  signIn(@Body() createUserDto: Omit<CreateUserDto, 'name'>) {
-    return this._userService.signIn(createUserDto);
+  async signIn(@Body() createUserDto: Omit<CreateUserDto, 'name'>) {
+    return await this._userService.signIn(createUserDto);
   }
 
   @UseGuards(JwtAuthGuard)

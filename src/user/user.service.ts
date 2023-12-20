@@ -95,7 +95,7 @@ export class UserService {
   async updateInformation(
     paramsDto: Omit<CreateUserDto, 'password' | 'id'>,
     tokenPayload: ITokenPayload,
-  ): Promise<Omit<User, 'password'>> {
+  ): Promise<{ data: Omit<User, 'password'>; token: string }> {
     if (paramsDto.email !== tokenPayload.email) {
       await this.validateThatNotExistEmail(paramsDto.email);
     }
@@ -110,10 +110,13 @@ export class UserService {
     });
     if (query) {
       return {
-        id: query.id,
-        name: query.name,
-        email: query.email,
-      } as Omit<User, 'password'>;
+        data: {
+          id: query.id,
+          name: query.name,
+          email: query.email,
+        } as Omit<User, 'password'>,
+        token: await this.generateJwt(query),
+      };
     }
   }
 }

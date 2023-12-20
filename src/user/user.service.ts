@@ -1,10 +1,10 @@
 import { Injectable, UnauthorizedException } from '@nestjs/common';
 import { PrismaService } from 'nestjs-prisma';
 import { CreateUserDto } from './user.controller';
-import type { PrismaPromise, User } from '@prisma/client';
+import type { Prisma, PrismaPromise, User } from '@prisma/client';
 import { JwtService } from '@nestjs/jwt';
 import * as bcrypt from 'bcrypt';
-
+import { ITokenPayload } from '../../inteface';
 @Injectable()
 export class UserService {
   constructor(
@@ -23,7 +23,7 @@ export class UserService {
   }
 
   private async findUserByEmail(email: string) {
-    const getUserByEmail = await this.prisma.user.findUnique({
+    const getUserByEmail = await this.prisma.user.findFirst({
       where: {
         email,
       },
@@ -69,14 +69,19 @@ export class UserService {
     return this.jwtTokenService.sign(payload);
   };
 
-  async signIn(params: Omit<CreateUserDto, 'name'>) {
-    const { password, email } = params;
+  private async getUser(email: string) {
     const getUser = await this.findUserByEmail(email);
     if (!getUser) {
       throw new UnauthorizedException({
         error: `${email} not exist in our platform`,
       });
     }
+    return getUser;
+  }
+
+  async signIn(params: Omit<CreateUserDto, 'name'>) {
+    const { password, email } = params;
+    const getUser = await this.getUser(email);
     const match = await this.validatePassword(password, getUser.password);
 
     if (match) {
@@ -85,5 +90,30 @@ export class UserService {
     throw new UnauthorizedException({
       error: 'Email or Password are invalid, try again',
     });
+  }
+
+  async updateInformation(
+    paramsDto: Omit<CreateUserDto, 'password' | 'id'>,
+    tokenPayload: ITokenPayload,
+  ): Promise<Omit<User, 'password'>> {
+    if (paramsDto.email !== tokenPayload.email) {
+      await this.validateThatNotExistEmail(paramsDto.email);
+    }
+    const query = await this.prisma.user.update({
+      data: {
+        email: paramsDto.email,
+        name: paramsDto.name,
+      },
+      where: {
+        id: tokenPayload.id,
+      },
+    });
+    if (query) {
+      return {
+        id: query.id,
+        name: query.name,
+        email: query.email,
+      } as Omit<User, 'password'>;
+    }
   }
 }

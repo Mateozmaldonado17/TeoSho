@@ -17,6 +17,7 @@ const prismaMock = {
     findMany: jest.fn(),
     create: jest.fn(),
     findFirst: jest.fn(),
+    update: jest.fn(),
   },
 };
 
@@ -127,6 +128,50 @@ describe('UserService', () => {
           'mateo.zapata@test.com not exist in our platform',
         );
       }
+    });
+
+    describe('UpdateInformation', () => {
+      it('should update info correctly', async () => {
+        const email = 'mateo.zapata@hotmail.com';
+        const params = {
+          email,
+          name: 'teo',
+        };
+        const tokenPayload = {
+          id: 1,
+          email,
+        };
+        const userResult = {
+          ...params,
+          id: tokenPayload.id,
+        };
+        prismaMock.user.update.mockResolvedValueOnce(userResult);
+        jwtServiceMock.sign.mockReturnValueOnce(token);
+        const response = await service.updateInformation(params, tokenPayload);
+        expect(response).toEqual({
+          data: userResult,
+          token,
+        });
+      });
+
+      it('should throw an error when exist email', async () => {
+        const params = {
+          email: 'mateo.zapata@hotmail.com',
+          name: 'teo',
+        };
+        const tokenPayload = {
+          id: 1,
+          email: 'mateo.zapata@yahoo.com',
+        };
+        prismaMock.user.findFirst.mockReturnValueOnce(false);
+        try {
+          await service.updateInformation(params, tokenPayload);
+        } catch (error) {
+          expect(error.response.error).toEqual(
+            'mateo.zapata@hotmail.com is already exist',
+          );
+        }
+      });
     });
   });
 });

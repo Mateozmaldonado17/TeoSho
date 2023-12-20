@@ -84,12 +84,12 @@ export class UserService {
     const getUser = await this.getUser(email);
     const match = await this.validatePassword(password, getUser.password);
 
-    if (match) {
-      return this.generateJwt(getUser);
+    if (!match) {
+      throw new UnauthorizedException({
+        error: 'Email or Password are invalid, try again',
+      });
     }
-    throw new UnauthorizedException({
-      error: 'Email or Password are invalid, try again',
-    });
+    return this.generateJwt(getUser);
   }
 
   async updateInformation(

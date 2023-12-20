@@ -36,7 +36,7 @@ export class ProductService {
     return getProduct;
   }
 
-  private async validateIfNotExistProductById(id: number) {
+  async validateIfNotExistProductById(id: number) {
     const getProduct = await this.getById(id);
     if (!getProduct) {
       throw new HttpException('This product is not exist', 404);

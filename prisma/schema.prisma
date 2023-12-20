@@ -15,6 +15,7 @@ model User {
   email String @unique
   password String
   name String
+  shops Shop[]
 }
 
 model Product {
@@ -23,4 +24,15 @@ model Product {
   description String
   image String @default("")
   price Decimal @db.Decimal(10,2)
+  shops Shop[]
+}
+
+model Shop {
+  id Int @id @default(autoincrement()) 
+  userId Int
+  productId Int
+  price Decimal @db.Decimal(10,2)
+  user User @relation(fields: [userId], references: [id])
+  boughtAt DateTime
+  product Product @relation(fields: [productId], references: [id])
 }

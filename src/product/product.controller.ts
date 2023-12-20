@@ -11,7 +11,7 @@ import {
 import { ProductService } from './product.service';
 import { Product } from '@prisma/client';
 import { IsDecimal, IsNotEmpty, IsNumberString, IsUrl } from 'class-validator';
-import { JwtAuthGuard } from 'src/jwt-auth.guard';
+import { JwtAuthGuard } from '../jwt-auth.guard';
 
 export class ProductDto {
   @IsNumberString()

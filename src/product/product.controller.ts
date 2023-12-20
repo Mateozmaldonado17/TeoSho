@@ -1,6 +1,7 @@
 import {
   Body,
   Controller,
+  Delete,
   Get,
   Param,
   Patch,
@@ -59,5 +60,11 @@ export class ProductController {
   @UseGuards(JwtAuthGuard)
   update(@Body() params: CreateProductoDto & ProductDto): Promise<Product> {
     return this._productService.update(params);
+  }
+
+  @Delete()
+  @UseGuards(JwtAuthGuard)
+  delete(@Body() params: CreateProductoDto & ProductDto): Promise<Product> {
+    return this._productService.delete(params);
   }
 }

@@ -77,4 +77,13 @@ export class ProductService {
     });
     return await newProduct;
   }
+
+  async delete(params: ProductDto): Promise<Product> {
+    const { id } = params;
+    await this.validateIfNotExistProductById(+id);
+    const deletedProduct = await this.prisma.product.delete({
+      where: { id: parseInt(id) },
+    });
+    return await deletedProduct;
+  }
 }

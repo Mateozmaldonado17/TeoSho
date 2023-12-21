@@ -53,11 +53,7 @@ export class ProductController {
   @Post()
   @UseGuards(JwtAuthGuard)
   create(@Body() params: CreateProductoDto): Promise<Product> {
-    try {
-      return this._productService.create(params);
-    } catch (error) {
-      console.log(error);
-    }
+    return this._productService.create(params);
   }
 
   @Patch()

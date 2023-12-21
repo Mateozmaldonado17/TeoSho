@@ -38,8 +38,21 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 var testing_1 = require("@nestjs/testing");
 var shop_service_1 = require("./shop.service");
-var product_module_1 = require("../product/product.module");
 var nestjs_prisma_1 = require("nestjs-prisma");
+var product_service_1 = require("../product/product.service");
+var tokenPayload = {
+    id: 1,
+    email: 'mateo.zapata@test.com'
+};
+var productServiceMock = {
+    validateIfNotExistProductById: jest.fn()
+};
+var prismaServiceMock = {
+    shop: {
+        createMany: jest.fn(),
+        findMany: jest.fn()
+    }
+};
 describe('ShopService', function () {
     var service;
     beforeEach(function () { return __awaiter(void 0, void 0, void 0, function () {
@@ -47,8 +60,17 @@ describe('ShopService', function () {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, testing_1.Test.createTestingModule({
-                        imports: [product_module_1.ProductModule],
-                        providers: [shop_service_1.ShopService, nestjs_prisma_1.PrismaService]
+                        providers: [
+                            shop_service_1.ShopService,
+                            {
+                                provide: nestjs_prisma_1.PrismaService,
+                                useValue: prismaServiceMock
+                            },
+                            {
+                                provide: product_service_1.ProductService,
+                                useValue: productServiceMock
+                            },
+                        ]
                     }).compile()];
                 case 1:
                     module = _a.sent();
@@ -60,4 +82,36 @@ describe('ShopService', function () {
     it('should be defined', function () {
         expect(service).toBeDefined();
     });
+    it('should create correctly items', function () { return __awaiter(void 0, void 0, void 0, function () {
+        var params;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    params = {
+                        items: [
+                            {
+                                price: '12.32',
+                                productId: 1
+                            },
+                        ]
+                    };
+                    return [4 /*yield*/, service.create(params.items, tokenPayload)];
+                case 1:
+                    _a.sent();
+                    expect(prismaServiceMock.shop.createMany).toHaveBeenCalled();
+                    return [2 /*return*/];
+            }
+        });
+    }); });
+    it('should get all correctly shops', function () { return __awaiter(void 0, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, service.getShops(tokenPayload)];
+                case 1:
+                    _a.sent();
+                    expect(prismaServiceMock.shop.findMany).toHaveBeenCalled();
+                    return [2 /*return*/];
+            }
+        });
+    }); });
 });

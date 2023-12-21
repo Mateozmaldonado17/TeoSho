@@ -11,7 +11,7 @@ var common_1 = require("@nestjs/common");
 var shop_service_1 = require("./shop.service");
 var shop_controller_1 = require("./shop.controller");
 var nestjs_prisma_1 = require("nestjs-prisma");
-var product_module_1 = require("src/product/product.module");
+var product_module_1 = require("../product/product.module");
 var ShopModule = /** @class */ (function () {
     function ShopModule() {
     }

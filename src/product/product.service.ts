@@ -33,7 +33,6 @@ export class ProductService {
     if (getProduct) {
       throw new HttpException(`${name} is already exist`, 401);
     }
-    return getProduct;
   }
 
   async validateIfNotExistProductById(id: number) {

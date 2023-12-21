@@ -41,6 +41,14 @@ var shop_controller_1 = require("./shop.controller");
 var shop_service_1 = require("./shop.service");
 var nestjs_prisma_1 = require("nestjs-prisma");
 var product_service_1 = require("../product/product.service");
+var tokenPayload = {
+    id: 1,
+    email: 'mateo.zapata@test.com'
+};
+var shopServiceMock = {
+    create: jest.fn(),
+    getShops: jest.fn()
+};
 describe('ShopController', function () {
     var controller;
     beforeEach(function () { return __awaiter(void 0, void 0, void 0, function () {
@@ -48,7 +56,14 @@ describe('ShopController', function () {
         return __generator(this, function (_a) {
             switch (_a.label) {
                 case 0: return [4 /*yield*/, testing_1.Test.createTestingModule({
-                        providers: [shop_service_1.ShopService, nestjs_prisma_1.PrismaService, product_service_1.ProductService],
+                        providers: [
+                            {
+                                provide: shop_service_1.ShopService,
+                                useValue: shopServiceMock
+                            },
+                            nestjs_prisma_1.PrismaService,
+                            product_service_1.ProductService,
+                        ],
                         controllers: [shop_controller_1.ShopController]
                     }).compile()];
                 case 1:
@@ -61,4 +76,36 @@ describe('ShopController', function () {
     it('should be defined', function () {
         expect(controller).toBeDefined();
     });
+    it('should create a new shop', function () { return __awaiter(void 0, void 0, void 0, function () {
+        var params;
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0:
+                    params = {
+                        items: [
+                            {
+                                price: '12.32',
+                                productId: 1
+                            },
+                        ]
+                    };
+                    return [4 /*yield*/, controller.create(params, tokenPayload)];
+                case 1:
+                    _a.sent();
+                    expect(shopServiceMock.create).toHaveBeenCalled();
+                    return [2 /*return*/];
+            }
+        });
+    }); });
+    it('should get All products', function () { return __awaiter(void 0, void 0, void 0, function () {
+        return __generator(this, function (_a) {
+            switch (_a.label) {
+                case 0: return [4 /*yield*/, controller.getAll(tokenPayload)];
+                case 1:
+                    _a.sent();
+                    expect(shopServiceMock.getShops).toHaveBeenCalled();
+                    return [2 /*return*/];
+            }
+        });
+    }); });
 });

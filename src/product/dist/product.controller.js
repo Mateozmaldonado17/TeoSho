@@ -52,7 +52,12 @@ var ProductController = /** @class */ (function () {
         return this._productService.findById(parseInt(id));
     };
     ProductController.prototype.create = function (params) {
-        return this._productService.create(params);
+        try {
+            return this._productService.create(params);
+        }
+        catch (error) {
+            console.log(error);
+        }
     };
     ProductController.prototype.update = function (params) {
         return this._productService.update(params);

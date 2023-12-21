@@ -9,7 +9,7 @@ import {
 import { ShopService } from './shop.service';
 import { IsDecimal, IsNumber, ValidateNested } from 'class-validator';
 import { Type } from 'class-transformer';
-import { JwtAuthGuard } from 'src/jwt-auth.guard';
+import { JwtAuthGuard } from '../jwt-auth.guard';
 import { ITokenPayload } from 'inteface';
 
 export interface IShopItem {

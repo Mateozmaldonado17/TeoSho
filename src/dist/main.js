@@ -47,6 +47,7 @@ function bootstrap() {
                 case 0: return [4 /*yield*/, core_1.NestFactory.create(app_module_1.AppModule)];
                 case 1:
                     app = _a.sent();
+                    app.enableCors();
                     app.useGlobalPipes(new common_1.ValidationPipe({
                         transform: true
                     }));

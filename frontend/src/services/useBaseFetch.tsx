@@ -1,7 +1,11 @@
 import { useFetch } from "use-http";
 
 const useBaseFetch = () => {
-  const baseUseFetch = useFetch("http://localhost:3000");
+  const token = localStorage.getItem("token");
+  const headers = {
+    Authorization: `Bearer ${token}`,
+  };
+  const baseUseFetch = useFetch("http://localhost:3000", { headers });
   return baseUseFetch;
 };
 

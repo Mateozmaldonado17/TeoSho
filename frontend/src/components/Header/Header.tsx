@@ -1,11 +1,21 @@
-import { Button, Navbar } from "keep-react";
-import { ShoppingCart, User } from "phosphor-react";
+import { Button, Navbar, Badge } from "keep-react";
+import { ShoppingCart, User, ShoppingCartSimple } from "phosphor-react";
 
 export const Header = () => {
   return (
     <Navbar fluid={true}>
       <Navbar.Container className="flex items-center justify-between">
-        <Navbar.Brand>TeoShop</Navbar.Brand>
+        <Navbar.Brand>
+          <Badge
+            size="sm"
+            colorType="strong"
+            color="warning"
+            icon={<ShoppingCartSimple size={18} />}
+            iconPosition="left"
+          >
+            TeoShop!
+          </Badge>
+        </Navbar.Brand>
 
         <Navbar.Collapse collapseType="sidebar">
           <Navbar.Container tag="ul" className="flex flex-col gap-5">

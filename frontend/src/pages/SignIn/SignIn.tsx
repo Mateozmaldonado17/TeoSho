@@ -2,17 +2,8 @@ import { Button, TextInput, Typography, Notification } from "keep-react";
 import { Envelope, EyeSlash, Lock } from "phosphor-react";
 import { useEffect, useState } from "react";
 import { useBaseFetch } from "../../services";
-import isJwtTokenExpired from "jwt-check-expiry";
 import { useNavigate } from "react-router-dom";
-
-const isExpiredToken = () => {
-  const token = localStorage.getItem("token");
-  if (token) {
-    const isValidToken = isJwtTokenExpired(token as string);
-    return isValidToken;
-  }
-  return false;
-};
+import { isExpiredToken } from "../../utils";
 
 const SignIn = (): JSX.Element => {
   const navigate = useNavigate();

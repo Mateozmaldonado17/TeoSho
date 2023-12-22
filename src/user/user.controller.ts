@@ -26,6 +26,15 @@ export class CreateUserDto {
   name: string;
 }
 
+export class UpdateUserDto {
+  @IsEmail()
+  email: string;
+
+  @IsNotEmpty()
+  @MinLength(5)
+  name: string;
+}
+
 @Controller('user')
 export class UserController {
   constructor(private readonly _userService: UserService) {}
@@ -45,12 +54,15 @@ export class UserController {
     return await this._userService.signIn(createUserDto);
   }
 
+  @Get('me')
   @UseGuards(JwtAuthGuard)
+  isValid(@Request() req): Promise<User> {
+    return this._userService.me(req.user as ITokenPayload);
+  }
+
   @Put()
-  updateInformation(
-    @Body() createUserDto: Omit<CreateUserDto, 'password' | 'id'>,
-    @Request() req,
-  ) {
+  @UseGuards(JwtAuthGuard)
+  updateInformation(@Body() createUserDto: UpdateUserDto, @Request() req) {
     return this._userService.updateInformation(
       createUserDto,
       req.user as ITokenPayload,

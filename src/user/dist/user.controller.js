@@ -45,7 +45,7 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
     }
 };
 exports.__esModule = true;
-exports.UserController = exports.CreateUserDto = void 0;
+exports.UserController = exports.UpdateUserDto = exports.CreateUserDto = void 0;
 var common_1 = require("@nestjs/common");
 var class_validator_1 = require("class-validator");
 var jwt_auth_guard_1 = require("../jwt-auth.guard");
@@ -66,6 +66,19 @@ var CreateUserDto = /** @class */ (function () {
     return CreateUserDto;
 }());
 exports.CreateUserDto = CreateUserDto;
+var UpdateUserDto = /** @class */ (function () {
+    function UpdateUserDto() {
+    }
+    __decorate([
+        class_validator_1.IsEmail()
+    ], UpdateUserDto.prototype, "email");
+    __decorate([
+        class_validator_1.IsNotEmpty(),
+        class_validator_1.MinLength(5)
+    ], UpdateUserDto.prototype, "name");
+    return UpdateUserDto;
+}());
+exports.UpdateUserDto = UpdateUserDto;
 var UserController = /** @class */ (function () {
     function UserController(_userService) {
         this._userService = _userService;
@@ -86,6 +99,9 @@ var UserController = /** @class */ (function () {
             });
         });
     };
+    UserController.prototype.isValid = function (req) {
+        return this._userService.me(req.user);
+    };
     UserController.prototype.updateInformation = function (createUserDto, req) {
         return this._userService.updateInformation(createUserDto, req.user);
     };
@@ -101,10 +117,14 @@ var UserController = /** @class */ (function () {
         __param(0, common_1.Body())
     ], UserController.prototype, "signIn");
     __decorate([
+        common_1.Get('me'),
         common_1.UseGuards(jwt_auth_guard_1.JwtAuthGuard),
+        __param(0, common_1.Request())
+    ], UserController.prototype, "isValid");
+    __decorate([
         common_1.Put(),
-        __param(0, common_1.Body()),
-        __param(1, common_1.Request())
+        common_1.UseGuards(jwt_auth_guard_1.JwtAuthGuard),
+        __param(0, common_1.Body()), __param(1, common_1.Request())
     ], UserController.prototype, "updateInformation");
     UserController = __decorate([
         common_1.Controller('user')

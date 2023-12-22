@@ -34,6 +34,11 @@ export class ShopService {
 
   async getShops(user: ITokenPayload) {
     return this.prisma.shop.findMany({
+      orderBy: [
+        {
+          boughtAt: 'desc',
+        },
+      ],
       where: {
         userId: user.id,
       },

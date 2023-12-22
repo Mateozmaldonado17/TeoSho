@@ -19,6 +19,9 @@ export class ProductDto {
 }
 
 export class CreateProductoDto {
+  @IsNumberString()
+  id: string;
+
   @IsNotEmpty()
   name: string;
 
@@ -64,7 +67,7 @@ export class ProductController {
 
   @Delete()
   @UseGuards(JwtAuthGuard)
-  delete(@Body() params: CreateProductoDto & ProductDto): Promise<Product> {
+  delete(@Body() params: CreateProductoDto): Promise<Product> {
     return this._productService.delete(params);
   }
 }

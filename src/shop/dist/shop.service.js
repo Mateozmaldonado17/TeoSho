@@ -91,6 +91,11 @@ var ShopService = /** @class */ (function () {
         return __awaiter(this, void 0, void 0, function () {
             return __generator(this, function (_a) {
                 return [2 /*return*/, this.prisma.shop.findMany({
+                        orderBy: [
+                            {
+                                boughtAt: 'desc'
+                            },
+                        ],
                         where: {
                             userId: user.id
                         },

@@ -119,4 +119,13 @@ export class UserService {
       };
     }
   }
+
+  async me(tokenPayload: ITokenPayload): Promise<User> {
+    const getUserByEmail = await this.prisma.user.findFirst({
+      where: {
+        email: tokenPayload.email,
+      },
+    });
+    return getUserByEmail;
+  }
 }

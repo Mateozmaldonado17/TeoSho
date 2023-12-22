@@ -1,15 +1,26 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Button, Navbar, Badge } from "keep-react";
-import { ShoppingCart, User, ShoppingCartSimple, Gear } from "phosphor-react";
+import {
+  ShoppingCart,
+  User,
+  ShoppingCartSimple,
+  Gear,
+  SignOut,
+} from "phosphor-react";
 import { ShopType, useShoppingContext } from "../../context/shopping";
 import { Link } from "react-router-dom";
 
 export const Header: React.FC = (): JSX.Element => {
-  const { shopping, isAuth } = useShoppingContext();
+  const { shopping, isAuth, setIsAuth } = useShoppingContext();
   let totalPrice = 0;
   shopping.forEach((shop: ShopType) => {
     totalPrice = totalPrice + parseFloat(shop.price as string);
   });
+
+  const signOut = () => {
+    localStorage.removeItem("token");
+    setIsAuth(false);
+  };
 
   return (
     <Navbar fluid={true}>
@@ -46,23 +57,34 @@ export const Header: React.FC = (): JSX.Element => {
                 />
               </Link>
             ) : (
-              <Link to="/settings">
-                <Navbar.Link
-                  icon={<Gear size={20} color="#444" />}
-                  iconAnimation={false}
-                />
-              </Link>
+              <>
+                <Link to="/settings">
+                  <Navbar.Link
+                    icon={<Gear size={20} color="#444" />}
+                    iconAnimation={false}
+                  />
+                </Link>
+                <div onClick={signOut}>
+                  <Navbar.Link
+                    icon={<SignOut size={20} color="#444" />}
+                    iconAnimation={false}
+                  />
+                </div>
+              </>
             )}
           </Navbar.Container>
 
-          <Button size="xs" type="outlineGray">
-            <span>
-              <ShoppingCart size={20} color="#444" />
-            </span>
-            <span className="ml-1 text-metal-600">
-              ({shopping.length}) Cart ${totalPrice}
-            </span>
-          </Button>
+          <Link to="/shopping-cart">
+            <Button size="xs" type="outlineGray">
+              <span>
+                <ShoppingCart size={20} color="#444" />
+              </span>
+              <span className="ml-1 text-metal-600">
+                ({shopping.length}) Cart ${totalPrice}
+              </span>
+            </Button>
+          </Link>
+
           <Navbar.Toggle />
         </Navbar.Container>
       </Navbar.Container>

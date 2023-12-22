@@ -29,7 +29,7 @@ const Shopping = (): JSX.Element => {
 
   return (
     <div className="flex justify-center">
-      <div className="flex flex-col max-w-80 gap-5">
+      <div className="flex flex-col  gap-5">
         <AccountButtonGroup />
         <Typography variant="heading-6">Shopping ({shop.length})</Typography>
         {shop?.map((shop: IShop, key: number) => {

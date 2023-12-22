@@ -62,6 +62,7 @@ const Product = (): JSX.Element => {
       {
         productId: id,
         price: product?.price,
+        product,
       },
     ]);
   };

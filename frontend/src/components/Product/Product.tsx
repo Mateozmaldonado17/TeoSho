@@ -27,6 +27,13 @@ const Product = ({
       {
         productId: id,
         price,
+        product: {
+          price,
+          image,
+          description,
+          name,
+          id: parseInt(id),
+        },
       },
     ]);
   };

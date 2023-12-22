@@ -1,6 +1,7 @@
 import { Card, Badge, Button } from "keep-react";
 import { ShoppingCart } from "phosphor-react";
 import { NavLink } from "react-router-dom";
+import { ShopType, useShoppingContext } from "../../context/shopping";
 
 interface IProduct {
   children?: React.ReactNode;
@@ -18,6 +19,31 @@ const Product = ({
   image,
   id,
 }: IProduct): JSX.Element => {
+  const { shopping, setShopping } = useShoppingContext();
+
+  const addToCart = () => {
+    setShopping([
+      ...shopping,
+      {
+        productId: id,
+        price,
+      },
+    ]);
+  };
+
+  const removeToCart = () => {
+    const itemRemoved = shopping.filter((item: ShopType) => {
+      return item.productId !== id;
+    });
+    setShopping(itemRemoved);
+  };
+
+  const existProductIdInCart = () => {
+    return shopping.find((shop: ShopType) => {
+      return shop.productId === id;
+    });
+  };
+
   return (
     <Card
       className="min-h-16 max-w-xs mx-auto overflow-hidden rounded-md"
@@ -36,11 +62,15 @@ const Product = ({
           <Card.Description>{description}</Card.Description>
         </Card.Container>
         <Card.Container className="flex items-center justify-start gap-5">
-          <Button size="sm" type="outlineGray">
+          <Button
+            size="sm"
+            type={existProductIdInCart() ? "outlineGray" : "primary"}
+            onClick={existProductIdInCart() ? removeToCart : addToCart}
+          >
             <span className="pr-2">
               <ShoppingCart size={24} />
             </span>
-            Add To Cart
+            {existProductIdInCart() ? "Remove item" : "Add to Cart"}
           </Button>
           <NavLink to={`/product/${id}`}>
             <Button size="sm" type="outlineGray">

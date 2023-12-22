@@ -1,4 +1,3 @@
-import { Header } from "./components";
 import { MyShoppingContext } from "./context/shopping";
 import { IProps } from "./interfaces";
 import React, { useState } from "react";
@@ -9,7 +8,6 @@ const App: React.FC<IProps> = ({ children }): JSX.Element => {
   return (
     <>
       <MyShoppingContext.Provider value={{ shopping, setShopping }}>
-        <Header />
         {children}
       </MyShoppingContext.Provider>
     </>

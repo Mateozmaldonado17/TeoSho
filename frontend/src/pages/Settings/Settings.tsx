@@ -42,7 +42,8 @@ const Settings = (): JSX.Element => {
   };
 
   useEffect(() => {
-    if (isExpiredToken()) {
+    const token = localStorage.getItem("token");
+    if (isExpiredToken() || !token) {
       navigate("/");
     }
     getUserInfo();

@@ -24,7 +24,8 @@ const SignIn = (): JSX.Element => {
   };
 
   useEffect(() => {
-    if (!isExpiredToken()) {
+    const token = localStorage.getItem("token");
+    if (!isExpiredToken() && token) {
       navigate("/");
     }
     // eslint-disable-next-line react-hooks/exhaustive-deps

@@ -22,7 +22,7 @@ const Main = (): JSX.Element => {
       {loading ? (
         <Spinner color="info" size="lg" />
       ) : (
-        <div className="ps-10 pe-10 pt-10 flex flex-row flex-wrap gap-10">
+        <div className="flex flex-row flex-wrap gap-10 ps-10 pe-10 pt-10">
           {products?.map((product: IProduct, key: number) => {
             return (
               <Product

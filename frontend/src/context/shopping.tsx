@@ -5,11 +5,13 @@ import { IShop } from "../interfaces";
 type ShopType = Partial<IShop>;
 
 type ShoppingContent = {
+  isAuth: boolean;
   shopping: ShopType[];
   setShopping: Dispatch<SetStateAction<ShopType[]>>;
 };
 
 const MyShoppingContext = createContext<ShoppingContent>({
+  isAuth: false,
   shopping: [],
   setShopping: () => {},
 });

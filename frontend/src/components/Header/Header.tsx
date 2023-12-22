@@ -1,12 +1,15 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 import { Button, Navbar, Badge } from "keep-react";
-import { ShoppingCart, User, ShoppingCartSimple } from "phosphor-react";
+import { ShoppingCart, User, ShoppingCartSimple, Gear } from "phosphor-react";
 import { ShopType, useShoppingContext } from "../../context/shopping";
+import { Link } from "react-router-dom";
+import { isExpiredToken } from "../../utils";
 
 export const Header: React.FC = (): JSX.Element => {
   const { shopping } = useShoppingContext();
-
+  const token = localStorage.getItem("token");
   let totalPrice = 0;
-  const runPrices = shopping.forEach((shop: ShopType) => {
+  shopping.forEach((shop: ShopType) => {
     totalPrice = totalPrice + parseFloat(shop.price as string);
   });
 
@@ -37,10 +40,21 @@ export const Header: React.FC = (): JSX.Element => {
             tag="ul"
             className="lg:flex hidden items-center justify-between gap-5"
           >
-            <Navbar.Link
-              icon={<User size={20} color="#444" />}
-              iconAnimation={false}
-            />
+            {isExpiredToken() || !token ? (
+              <Link to="/sign-in">
+                <Navbar.Link
+                  icon={<User size={20} color="#444" />}
+                  iconAnimation={false}
+                />
+              </Link>
+            ) : (
+              <Link to="/settings">
+                <Navbar.Link
+                  icon={<Gear size={20} color="#444" />}
+                  iconAnimation={false}
+                />
+              </Link>
+            )}
           </Navbar.Container>
 
           <Button size="xs" type="outlineGray">

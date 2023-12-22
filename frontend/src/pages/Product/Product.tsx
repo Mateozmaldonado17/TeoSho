@@ -1,5 +1,5 @@
 import { Button, Card } from "keep-react";
-import { IProduct, IShop } from "../../interfaces";
+import { IProduct } from "../../interfaces";
 import { ChangeEvent, useCallback, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Delete, Edit } from "./Partial";

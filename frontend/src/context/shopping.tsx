@@ -6,6 +6,7 @@ type ShopType = Partial<IShop>;
 
 type ShoppingContent = {
   isAuth: boolean;
+  setIsAuth: Dispatch<SetStateAction<boolean>>;
   shopping: ShopType[];
   setShopping: Dispatch<SetStateAction<ShopType[]>>;
 };
@@ -14,6 +15,7 @@ const MyShoppingContext = createContext<ShoppingContent>({
   isAuth: false,
   shopping: [],
   setShopping: () => {},
+  setIsAuth: () => {},
 });
 
 const useShoppingContext = () => useContext(MyShoppingContext);

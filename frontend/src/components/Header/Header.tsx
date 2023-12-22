@@ -3,11 +3,9 @@ import { Button, Navbar, Badge } from "keep-react";
 import { ShoppingCart, User, ShoppingCartSimple, Gear } from "phosphor-react";
 import { ShopType, useShoppingContext } from "../../context/shopping";
 import { Link } from "react-router-dom";
-import { isExpiredToken } from "../../utils";
 
 export const Header: React.FC = (): JSX.Element => {
-  const { shopping } = useShoppingContext();
-  const token = localStorage.getItem("token");
+  const { shopping, isAuth } = useShoppingContext();
   let totalPrice = 0;
   shopping.forEach((shop: ShopType) => {
     totalPrice = totalPrice + parseFloat(shop.price as string);
@@ -40,7 +38,7 @@ export const Header: React.FC = (): JSX.Element => {
             tag="ul"
             className="lg:flex hidden items-center justify-between gap-5"
           >
-            {isExpiredToken() || !token ? (
+            {!isAuth ? (
               <Link to="/sign-in">
                 <Navbar.Link
                   icon={<User size={20} color="#444" />}

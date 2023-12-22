@@ -4,9 +4,11 @@ import { useEffect, useState } from "react";
 import { useBaseFetch } from "../../services";
 import { useNavigate } from "react-router-dom";
 import { isExpiredToken } from "../../utils";
+import { useShoppingContext } from "../../context/shopping";
 
 const SignIn = (): JSX.Element => {
   const navigate = useNavigate();
+  const { setIsAuth } = useShoppingContext();
   const [email, setEmail] = useState<string>();
   const [password, setPassword] = useState<string>();
   const [showNotification, setShowNotification] = useState<boolean>(true);
@@ -19,6 +21,7 @@ const SignIn = (): JSX.Element => {
     });
     if (!request.error) {
       localStorage.setItem("token", request);
+      setIsAuth(true);
       navigate("/");
     }
   };

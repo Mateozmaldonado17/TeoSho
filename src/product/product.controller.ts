@@ -67,7 +67,7 @@ export class ProductController {
 
   @Delete()
   @UseGuards(JwtAuthGuard)
-  delete(@Body() params: CreateProductoDto): Promise<Product> {
+  delete(@Body() params: ProductDto) {
     return this._productService.delete(params);
   }
 }

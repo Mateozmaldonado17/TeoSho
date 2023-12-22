@@ -1,4 +1,4 @@
-import { Injectable } from '@nestjs/common';
+import { HttpException, Inject, Injectable, forwardRef } from '@nestjs/common';
 import { PrismaService } from 'nestjs-prisma';
 import { IShopItem } from './shop.controller';
 import { ITokenPayload } from 'inteface';
@@ -8,6 +8,7 @@ import { ProductService } from '../product/product.service';
 export class ShopService {
   constructor(
     private readonly prisma: PrismaService,
+    @Inject(forwardRef(() => ProductService))
     private readonly _productService: ProductService,
   ) {}
 
@@ -30,6 +31,21 @@ export class ShopService {
       skipDuplicates: true,
     });
     return insert;
+  }
+
+  async verifyIfExistShopsByProductId(productId: number) {
+    const shopProduct = await this.prisma.shop.findMany({
+      where: {
+        productId,
+      },
+    });
+
+    if (shopProduct.length) {
+      throw new HttpException(
+        'This product has Shops and we can`t delete it',
+        401,
+      );
+    }
   }
 
   async getShops(user: ITokenPayload) {

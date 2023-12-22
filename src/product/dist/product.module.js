@@ -11,13 +11,14 @@ var common_1 = require("@nestjs/common");
 var product_controller_1 = require("./product.controller");
 var product_service_1 = require("./product.service");
 var nestjs_prisma_1 = require("nestjs-prisma");
+var shop_service_1 = require("../shop/shop.service");
 var ProductModule = /** @class */ (function () {
     function ProductModule() {
     }
     ProductModule = __decorate([
         common_1.Module({
             controllers: [product_controller_1.ProductController],
-            providers: [product_service_1.ProductService, nestjs_prisma_1.PrismaService],
+            providers: [product_service_1.ProductService, nestjs_prisma_1.PrismaService, shop_service_1.ShopService],
             exports: [product_service_1.ProductService]
         })
     ], ProductModule);

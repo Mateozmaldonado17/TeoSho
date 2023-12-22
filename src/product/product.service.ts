@@ -1,11 +1,22 @@
-import { Get, HttpException, Injectable } from '@nestjs/common';
+import {
+  Get,
+  HttpException,
+  Inject,
+  Injectable,
+  forwardRef,
+} from '@nestjs/common';
 import { Product } from '@prisma/client';
 import { PrismaService } from 'nestjs-prisma';
 import { CreateProductoDto, ProductDto } from './product.controller';
+import { ShopService } from '../shop/shop.service';
 
 @Injectable()
 export class ProductService {
-  constructor(private readonly prisma: PrismaService) {}
+  constructor(
+    private readonly prisma: PrismaService,
+    @Inject(forwardRef(() => ShopService))
+    private readonly _shopService: ShopService,
+  ) {}
 
   @Get()
   async getAll(): Promise<Product[]> {
@@ -79,10 +90,13 @@ export class ProductService {
 
   async delete(params: ProductDto): Promise<Product> {
     const { id } = params;
-    await this.validateIfNotExistProductById(+id);
+    await Promise.all([
+      this._shopService.verifyIfExistShopsByProductId(+id),
+      this.validateIfNotExistProductById(+id),
+    ]);
     const deletedProduct = await this.prisma.product.delete({
-      where: { id: parseInt(id) },
+      where: { id: +id },
     });
-    return await deletedProduct;
+    return deletedProduct;
   }
 }

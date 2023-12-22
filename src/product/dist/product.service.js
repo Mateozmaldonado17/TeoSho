@@ -5,6 +5,9 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
     else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
     return c > 3 && r && Object.defineProperty(target, key, r), r;
 };
+var __param = (this && this.__param) || function (paramIndex, decorator) {
+    return function (target, key) { decorator(target, key, paramIndex); }
+};
 var __awaiter = (this && this.__awaiter) || function (thisArg, _arguments, P, generator) {
     function adopt(value) { return value instanceof P ? value : new P(function (resolve) { resolve(value); }); }
     return new (P || (P = Promise))(function (resolve, reject) {
@@ -44,9 +47,11 @@ var __generator = (this && this.__generator) || function (thisArg, body) {
 exports.__esModule = true;
 exports.ProductService = void 0;
 var common_1 = require("@nestjs/common");
+var shop_service_1 = require("../shop/shop.service");
 var ProductService = /** @class */ (function () {
-    function ProductService(prisma) {
+    function ProductService(prisma, _shopService) {
         this.prisma = prisma;
+        this._shopService = _shopService;
     }
     ProductService.prototype.getAll = function () {
         return __awaiter(this, void 0, Promise, function () {
@@ -192,16 +197,18 @@ var ProductService = /** @class */ (function () {
                 switch (_a.label) {
                     case 0:
                         id = params.id;
-                        return [4 /*yield*/, this.validateIfNotExistProductById(+id)];
+                        return [4 /*yield*/, Promise.all([
+                                this._shopService.verifyIfExistShopsByProductId(+id),
+                                this.validateIfNotExistProductById(+id),
+                            ])];
                     case 1:
                         _a.sent();
                         return [4 /*yield*/, this.prisma.product["delete"]({
-                                where: { id: parseInt(id) }
+                                where: { id: +id }
                             })];
                     case 2:
                         deletedProduct = _a.sent();
-                        return [4 /*yield*/, deletedProduct];
-                    case 3: return [2 /*return*/, _a.sent()];
+                        return [2 /*return*/, deletedProduct];
                 }
             });
         });
@@ -210,7 +217,8 @@ var ProductService = /** @class */ (function () {
         common_1.Get()
     ], ProductService.prototype, "getAll");
     ProductService = __decorate([
-        common_1.Injectable()
+        common_1.Injectable(),
+        __param(1, common_1.Inject(common_1.forwardRef(function () { return shop_service_1.ShopService; })))
     ], ProductService);
     return ProductService;
 }());

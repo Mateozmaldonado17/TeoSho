@@ -11,6 +11,8 @@
   },
   "dependencies": {
     "autoprefixer": "^10.4.16",
+    "jwt-check-expiration": "^1.0.5",
+    "jwt-check-expiry": "^1.0.10",
     "keep-react": "^1.1.0",
     "phosphor-react": "^1.4.1",
     "postcss": "^8.4.32",

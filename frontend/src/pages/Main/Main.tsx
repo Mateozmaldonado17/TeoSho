@@ -1,11 +1,12 @@
 import { Spinner } from "keep-react";
 import { Product } from "../../components";
-import useFetch from "use-http";
 import { IProduct } from "../../interfaces";
 import { useCallback, useEffect, useState } from "react";
+import { useBaseFetch } from "../../services";
+
 const Main = (): JSX.Element => {
   const [products, setProducts] = useState<IProduct[]>();
-  const { get, loading, response } = useFetch("http://localhost:3000");
+  const { get, loading, response } = useBaseFetch();
 
   const loadInitialProducts = useCallback(async () => {
     const products = await get("/product");

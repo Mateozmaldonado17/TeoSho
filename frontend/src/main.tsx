@@ -5,7 +5,7 @@ import ReactDOM from "react-dom/client";
 import App from "./App";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./index.css";
-import { Main, Product, SignIn, Settings, Shopping } from "./pages";
+import { Main, Product, SignIn, Settings, Shopping, SignUp } from "./pages";
 import { Header } from "./components";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
@@ -17,6 +17,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
           <Route path="/" element={<Main />} />
           <Route path="/product/:id" element={<Product />} />
           <Route path="/sign-in" element={<SignIn />} />
+          <Route path="/sign-up" element={<SignUp />} />
           <Route path="/settings" element={<Settings />} />
           <Route path="/shopping" element={<Shopping />} />
         </Routes>

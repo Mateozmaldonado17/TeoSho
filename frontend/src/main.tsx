@@ -5,7 +5,7 @@ import ReactDOM from "react-dom/client";
 import App from "./App";
 import { BrowserRouter, Route, Routes } from "react-router-dom";
 import "./index.css";
-import { Main, Product, SignIn, Settings } from "./pages";
+import { Main, Product, SignIn, Settings, Shopping } from "./pages";
 
 ReactDOM.createRoot(document.getElementById("root")!).render(
   <React.StrictMode>
@@ -16,6 +16,7 @@ ReactDOM.createRoot(document.getElementById("root")!).render(
           <Route path="/product/:id" element={<Product />} />
           <Route path="/sign-in" element={<SignIn />} />
           <Route path="/settings" element={<Settings />} />
+          <Route path="/shopping" element={<Shopping />} />
         </Routes>
       </BrowserRouter>
     </App>

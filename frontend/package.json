@@ -20,6 +20,7 @@
     "react-dom": "^18.2.0",
     "react-router-dom": "^6.21.0",
     "tailwindcss": "^3.4.0",
+    "timeago-react": "^3.0.6",
     "use-http": "^1.0.28",
     "usehooks-ts": "^2.9.1"
   },

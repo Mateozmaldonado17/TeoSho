@@ -2,7 +2,7 @@ import { Button, TextInput, Typography, Notification } from "keep-react";
 import { Envelope, EyeSlash, Lock } from "phosphor-react";
 import { useEffect, useState } from "react";
 import { useBaseFetch } from "../../services";
-import { useNavigate } from "react-router-dom";
+import { NavLink, useNavigate } from "react-router-dom";
 import { isExpiredToken } from "../../utils";
 import { useShoppingContext } from "../../context/shopping";
 
@@ -104,6 +104,12 @@ const SignUp = (): JSX.Element => {
         >
           Sign Up
         </Button>
+
+        <NavLink to="/sign-in">
+          <Button className="w-full" size="md" type="primary">
+            Sign In
+          </Button>
+        </NavLink>
       </div>
     </div>
   );

@@ -9,7 +9,8 @@ const App: React.FC<IProps> = ({ children }): JSX.Element => {
   const [shopping, setShopping] = useState<ShopType[]>([]);
 
   useEffect(() => {
-    if (!isExpiredToken()) {
+    const token = localStorage.getItem("token");
+    if (token && !isExpiredToken()) {
       setIsAuth(true);
     }
   }, []);

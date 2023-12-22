@@ -1,6 +1,6 @@
 import { Button, Card } from "keep-react";
 import { IProduct } from "../../interfaces";
-import { ChangeEvent, useCallback, useEffect, useState } from "react";
+import { ChangeEvent, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router-dom";
 import { Delete, Edit } from "./Partial";
 import { useBaseFetch } from "../../services";
@@ -18,7 +18,7 @@ const Product = (): JSX.Element => {
   const [product, setProduct] = useState<IProduct>();
   const [productEdited, setProductEdited] = useState<IProduct>();
 
-  const loadInitialProduct = useCallback(async () => {
+  const loadInitialProduct = async () => {
     const product = await get(`/product/${id}`);
     if (product.statusCode === 404) {
       return navigate("/");
@@ -26,10 +26,12 @@ const Product = (): JSX.Element => {
     setProduct(product);
     setProductEdited(product);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [id, get]);
+  };
 
   useEffect(() => {
-    loadInitialProduct();
+    return () => {
+      loadInitialProduct();
+    };
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
@@ -39,12 +41,14 @@ const Product = (): JSX.Element => {
     await patch("/product", {
       ...productEdited,
     });
+    await loadInitialProduct();
   };
 
   const deleteProduct = async () => {
     await del("/product", {
       id: String(id),
     });
+    await loadInitialProduct();
     navigate("/");
   };
 

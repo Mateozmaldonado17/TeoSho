@@ -1,14 +1,10 @@
 /* eslint-disable react-hooks/exhaustive-deps */
 import { Button, Navbar, Badge } from "keep-react";
-import {
-  ShoppingCart,
-  User,
-  ShoppingCartSimple,
-  Gear,
-  SignOut,
-} from "phosphor-react";
+import { ShoppingCart, User, ShoppingCartSimple, Gear } from "phosphor-react";
 import { ShopType, useShoppingContext } from "../../context/shopping";
 import { Link } from "react-router-dom";
+import { useEffect } from "react";
+import { isExpiredToken } from "../../utils";
 
 export const Header: React.FC = (): JSX.Element => {
   const { shopping, isAuth, setIsAuth } = useShoppingContext();
@@ -16,6 +12,13 @@ export const Header: React.FC = (): JSX.Element => {
   shopping.forEach((shop: ShopType) => {
     totalPrice = totalPrice + parseFloat(shop.price as string);
   });
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token || isExpiredToken()) {
+      setIsAuth(false);
+    }
+  }, []);
 
   const signOut = () => {
     localStorage.removeItem("token");
@@ -64,12 +67,9 @@ export const Header: React.FC = (): JSX.Element => {
                     iconAnimation={false}
                   />
                 </Link>
-                <div onClick={signOut}>
-                  <Navbar.Link
-                    icon={<SignOut size={20} color="#444" />}
-                    iconAnimation={false}
-                  />
-                </div>
+                <Button onClick={signOut} size="xs" type="primary">
+                  Sign Out
+                </Button>
               </>
             )}
           </Navbar.Container>

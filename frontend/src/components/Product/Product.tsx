@@ -1,5 +1,6 @@
 import { Card, Badge, Button } from "keep-react";
 import { ShoppingCart } from "phosphor-react";
+import { NavLink } from "react-router-dom";
 
 interface IProduct {
   children?: React.ReactNode;
@@ -15,6 +16,7 @@ const Product = ({
   name,
   description,
   image,
+  id,
 }: IProduct): JSX.Element => {
   return (
     <Card
@@ -40,9 +42,11 @@ const Product = ({
             </span>
             Add To Cart
           </Button>
-          <Button size="sm" type="outlineGray">
-            See More
-          </Button>
+          <NavLink to={`/product/${id}`}>
+            <Button size="sm" type="outlineGray">
+              See More
+            </Button>
+          </NavLink>
         </Card.Container>
       </Card.Container>
     </Card>

@@ -1,11 +1,11 @@
-import { Button, Card, Typography } from "keep-react";
-import { ShoppingBag, Person } from "phosphor-react";
+import { Card, Typography } from "keep-react";
 import { useBaseFetch } from "../../services";
 import { useEffect, useState } from "react";
 import { isExpiredToken } from "../../utils";
 import { useNavigate } from "react-router-dom";
 import { IShop } from "../../interfaces";
 import TimeAgo from "timeago-react";
+import { AccountButtonGroup } from "../../components";
 
 const Shopping = (): JSX.Element => {
   const navigate = useNavigate();
@@ -30,21 +30,8 @@ const Shopping = (): JSX.Element => {
   return (
     <div className="flex justify-center">
       <div className="flex flex-col max-w-80 gap-5">
-        <Button.Group className="min-w-full justify-center">
-          <Button type="primary" positionInGroup="start">
-            <span className="pr-2">
-              <Person size={24} />
-            </span>
-            Account
-          </Button>
-          <Button type="primary" positionInGroup="end">
-            <span className="pr-2">
-              <ShoppingBag size={24} />
-            </span>
-            Shopping
-          </Button>
-        </Button.Group>
-        <Typography variant="heading-6">Shopping</Typography>
+        <AccountButtonGroup />
+        <Typography variant="heading-6">Shopping ({shop.length})</Typography>
         {shop?.map((shop: IShop, key: number) => {
           return (
             <Card key={key} className="p-6 max-w-xl">

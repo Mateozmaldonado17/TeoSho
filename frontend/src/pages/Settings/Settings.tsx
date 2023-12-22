@@ -1,10 +1,11 @@
 import { Alert, Button, Label, TextInput } from "keep-react";
-import { ShoppingBag, Person, XCircle } from "phosphor-react";
+import { XCircle } from "phosphor-react";
 import { useBaseFetch } from "../../services";
 import { useEffect, useState } from "react";
 import { IUser } from "../../interfaces";
 import { isExpiredToken } from "../../utils";
 import { useNavigate } from "react-router-dom";
+import { AccountButtonGroup } from "../../components";
 
 const Settings = (): JSX.Element => {
   const navigate = useNavigate();
@@ -51,20 +52,7 @@ const Settings = (): JSX.Element => {
   return (
     <div className="flex justify-center">
       <div className="flex flex-col max-w-80 gap-5">
-        <Button.Group className="min-w-full justify-center">
-          <Button type="primary" positionInGroup="start">
-            <span className="pr-2">
-              <Person size={24} />
-            </span>
-            Account
-          </Button>
-          <Button type="primary" positionInGroup="end">
-            <span className="pr-2">
-              <ShoppingBag size={24} />
-            </span>
-            Shopping
-          </Button>
-        </Button.Group>
+        <AccountButtonGroup />
 
         <Alert
           dismiss={Boolean(!errors.length)}

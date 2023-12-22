@@ -1,7 +1,15 @@
 import { Button, Navbar, Badge } from "keep-react";
 import { ShoppingCart, User, ShoppingCartSimple } from "phosphor-react";
+import { ShopType, useShoppingContext } from "../../context/shopping";
 
-export const Header = () => {
+export const Header: React.FC = (): JSX.Element => {
+  const { shopping } = useShoppingContext();
+
+  let totalPrice = 0;
+  const runPrices = shopping.forEach((shop: ShopType) => {
+    totalPrice = totalPrice + parseFloat(shop.price as string);
+  });
+
   return (
     <Navbar fluid={true}>
       <Navbar.Container className="flex items-center justify-between">
@@ -39,7 +47,9 @@ export const Header = () => {
             <span>
               <ShoppingCart size={20} color="#444" />
             </span>
-            <span className="ml-1 text-metal-600">Cart $0.00</span>
+            <span className="ml-1 text-metal-600">
+              ({shopping.length}) Cart ${totalPrice}
+            </span>
           </Button>
           <Navbar.Toggle />
         </Navbar.Container>

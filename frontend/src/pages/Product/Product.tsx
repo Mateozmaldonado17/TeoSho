@@ -1,32 +1,51 @@
-import useFetch from "use-http";
 import { Button, Card } from "keep-react";
-import { IProduct } from "../../interfaces";
+import { IProduct, IShop } from "../../interfaces";
 import { ChangeEvent, useCallback, useEffect, useState } from "react";
-import { useParams } from "react-router-dom";
-import { Edit } from "./Partial";
+import { useNavigate, useParams } from "react-router-dom";
+import { Delete, Edit } from "./Partial";
+import { useBaseFetch } from "../../services";
+import { ShopType, useShoppingContext } from "../../context/shopping";
 
 const Product = (): JSX.Element => {
   const { id } = useParams();
-  const request = useFetch("http://localhost:3000");
+  const navigate = useNavigate();
+  const { shopping, setShopping } = useShoppingContext();
+  const { get, patch, del } = useBaseFetch();
   const [showEditProductModal, setShowEditProductModal] =
+    useState<boolean>(false);
+  const [showDeleteProductModal, setShowDeleteProductModal] =
     useState<boolean>(false);
   const [product, setProduct] = useState<IProduct>();
   const [productEdited, setProductEdited] = useState<IProduct>();
 
   const loadInitialProduct = useCallback(async () => {
-    const product = await request.get(`/product/${id}`);
+    const product = await get(`/product/${id}`);
+    if (product.statusCode === 404) {
+      return navigate("/");
+    }
     setProduct(product);
     setProductEdited(product);
-  }, [id, request]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [id, get]);
 
   useEffect(() => {
     loadInitialProduct();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
-  const updateProduct = () => {
+  const updateProduct = async () => {
     setProduct(productEdited);
     setShowEditProductModal(false);
+    await patch("/product", {
+      ...productEdited,
+    });
+  };
+
+  const deleteProduct = async () => {
+    await del("/product", {
+      id: String(id),
+    });
+    navigate("/");
   };
 
   const handleOnChange = (e: ChangeEvent<HTMLInputElement>, key: string) => {
@@ -37,8 +56,36 @@ const Product = (): JSX.Element => {
     setProductEdited(productEditedDraft as IProduct);
   };
 
+  const addToCart = () => {
+    setShopping([
+      ...shopping,
+      {
+        productId: id,
+        price: product?.price,
+      },
+    ]);
+  };
+
+  const removeToCart = () => {
+    const itemRemoved = shopping.filter((item: ShopType) => {
+      return item.productId !== id;
+    });
+    setShopping(itemRemoved);
+  };
+
+  const existProductIdInCart = () => {
+    return shopping.find((shop: ShopType) => {
+      return shop.productId === id;
+    });
+  };
+
   return (
     <>
+      <Delete
+        showDeleteProductModal={showDeleteProductModal}
+        setShowDeleteProductModal={setShowDeleteProductModal}
+        deleteProduct={deleteProduct}
+      />
       <Edit
         setShowEditProductModal={setShowEditProductModal}
         showEditProductModal={showEditProductModal}
@@ -65,8 +112,13 @@ const Product = (): JSX.Element => {
               <Card.Description className="text-body-6 md:text-body-5 font-normal text-metal-500">
                 {product?.description}
                 <div className="flex flex-col gap-3 pt-5 justify-center">
-                  <Button className="w-full" size="xs" type="primary">
-                    Add to cart
+                  <Button
+                    className="w-full"
+                    size="xs"
+                    type="primary"
+                    onClick={existProductIdInCart() ? removeToCart : addToCart}
+                  >
+                    {existProductIdInCart() ? "Remove item" : "Add to Cart"}
                   </Button>
                   <Button
                     size="xs"
@@ -76,7 +128,12 @@ const Product = (): JSX.Element => {
                   >
                     Edit
                   </Button>
-                  <Button className="w-full" size="xs" type="default">
+                  <Button
+                    className="w-full"
+                    size="xs"
+                    type="default"
+                    onClick={() => setShowDeleteProductModal(true)}
+                  >
                     Delete
                   </Button>
                 </div>

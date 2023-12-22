@@ -19,9 +19,6 @@ export class ProductDto {
 }
 
 export class CreateProductoDto {
-  @IsNumberString()
-  id: string;
-
   @IsNotEmpty()
   name: string;
 

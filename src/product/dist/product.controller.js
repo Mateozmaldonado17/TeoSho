@@ -26,9 +26,6 @@ var CreateProductoDto = /** @class */ (function () {
     function CreateProductoDto() {
     }
     __decorate([
-        class_validator_1.IsNumberString()
-    ], CreateProductoDto.prototype, "id");
-    __decorate([
         class_validator_1.IsNotEmpty()
     ], CreateProductoDto.prototype, "name");
     __decorate([
